@@ -1,9 +1,5 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { RippleModule } from 'primeng/ripple';
-import { StyleClassModule } from 'primeng/styleclass';
-import { ButtonModule } from 'primeng/button';
-import { DividerModule } from 'primeng/divider';
 import { TopbarWidget } from './components/topbarwidget.component';
 import { HeroWidget } from './components/herowidget';
 import { FeaturesWidget } from './components/featureswidget';
@@ -14,11 +10,11 @@ import { FooterWidget } from './components/footerwidget';
 @Component({
     selector: 'app-landing',
     standalone: true,
-    imports: [RouterModule, TopbarWidget, HeroWidget, FeaturesWidget, HighlightsWidget, PricingWidget, FooterWidget, RippleModule, StyleClassModule, ButtonModule, DividerModule],
+    imports: [RouterModule, TopbarWidget, HeroWidget, FeaturesWidget, HighlightsWidget, PricingWidget, FooterWidget],
     template: `
-        <div class="bg-surface-0 dark:bg-surface-900">
-            <div id="home" class="landing-wrapper overflow-hidden">
-                <topbar-widget class="py-6 px-6 mx-0 md:mx-12 lg:mx-20 lg:px-20 flex items-center justify-between relative lg:static" />
+        <div class="bg-surface-0">
+            <div class="landing-wrapper overflow-hidden">
+                <topbar-widget />
                 <hero-widget />
                 <features-widget />
                 <highlights-widget />
@@ -28,4 +24,48 @@ import { FooterWidget } from './components/footerwidget';
         </div>
     `
 })
-export class Landing {}
+export class Landing implements AfterViewInit {
+    ngAfterViewInit(): void {
+        this.initRevealOnScroll();
+        this.initSmoothAnchors();
+    }
+
+    private initRevealOnScroll() {
+        const els = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+        if (!els.length) return;
+
+        if (!('IntersectionObserver' in window)) {
+            els.forEach((el) => el.classList.add('in'));
+            return;
+        }
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    (entry.target as HTMLElement).classList.add('in');
+                    observer.unobserve(entry.target);
+                });
+            },
+            { threshold: 0.15, rootMargin: '0px 0px -60px 0px' }
+        );
+
+        els.forEach((el) => observer.observe(el));
+    }
+
+    private initSmoothAnchors() {
+        // Simple smooth scrolling for internal anchors.
+        document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
+            a.addEventListener('click', (e) => {
+                const href = a.getAttribute('href') || '';
+                if (!href || href === '#' || href === '#!') return;
+                const target = document.querySelector<HTMLElement>(href);
+                if (!target) return;
+                e.preventDefault();
+                const headerH = document.querySelector('header')?.getBoundingClientRect().height || 0;
+                const top = target.getBoundingClientRect().top + window.scrollY - headerH - 16;
+                window.scrollTo({ top, behavior: 'smooth' });
+            });
+        });
+    }
+}

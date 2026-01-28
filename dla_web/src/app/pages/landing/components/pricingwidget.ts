@@ -1,119 +1,80 @@
 import { Component } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { DividerModule } from 'primeng/divider';
-import { RippleModule } from 'primeng/ripple';
+import { CommonModule } from '@angular/common';
+
+type Plan = {
+    name: string;
+    priceHint: string;
+    tagline: string;
+    bullets: string[];
+    highlight?: boolean;
+};
 
 @Component({
     selector: 'pricing-widget',
-    imports: [DividerModule, ButtonModule, RippleModule],
+    standalone: true,
+    imports: [CommonModule],
     template: `
-        <div id="pricing" class="py-6 px-6 lg:px-20 my-2 md:my-6">
-            <div class="text-center mb-6">
-                <div class="text-surface-900 dark:text-surface-0 font-normal mb-2 text-4xl">Matchless Pricing</div>
-                <span class="text-muted-color text-2xl">Amet consectetur adipiscing elit...</span>
-            </div>
+        <section id="plans" class="py-20 bg-surface-0">
+            <div class="mx-auto max-w-7xl px-6">
+                <header class="section-header text-center" data-reveal>
+                    <h2 class="section-title">Opciones de servicio</h2>
+                    <p class="section-subtitle">Los precios finales dependen de peso/volumen y destino. Aquí dejamos la estructura lista para tus planes.</p>
+                </header>
 
-            <div class="grid grid-cols-12 gap-4 justify-between mt-20 md:mt-0">
-                <div class="col-span-12 lg:col-span-4 p-0 md:p-4">
-                    <div class="p-4 flex flex-col border-surface-200 dark:border-surface-600 pricing-card cursor-pointer border-2 hover:border-primary duration-300 transition-all" style="border-radius: 10px">
-                        <div class="text-surface-900 dark:text-surface-0 text-center my-8 text-3xl">Free</div>
-                        <img src="https://primefaces.org/cdn/templates/sakai/landing/free.svg" class="w-10/12 mx-auto" alt="free" />
-                        <div class="my-8 flex flex-col items-center gap-4">
-                            <div class="flex items-center">
-                                <span class="text-5xl font-bold mr-2 text-surface-900 dark:text-surface-0">$0</span>
-                                <span class="text-surface-600 dark:text-surface-200">per month</span>
+                <div class="grid grid-cols-12 gap-6">
+                    <div class="col-span-12 md:col-span-6 lg:col-span-4" *ngFor="let p of plans" data-reveal>
+                        <div
+                            class="rounded-2xl border p-8 h-full bg-white"
+                            [ngClass]="p.highlight ? 'border-[var(--dla-gold)] shadow-lg' : 'border-[rgba(0,0,0,0.08)]'"
+                        >
+                            <div class="flex items-start justify-between gap-4">
+                                <div>
+                                    <div class="text-xl font-extrabold">{{ p.name }}</div>
+                                    <div class="text-sm text-surface-600 mt-1">{{ p.tagline }}</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold" style="color: var(--dla-gold-dark)">{{ p.priceHint }}</div>
+                                    <div class="text-xs text-surface-500">estimado</div>
+                                </div>
                             </div>
-                            <button pButton pRipple label="Get Started" class="p-button-rounded border-0 ml-4 font-light leading-tight bg-blue-500 text-white"></button>
-                        </div>
-                        <p-divider class="w-full bg-surface-200"></p-divider>
-                        <ul class="my-8 list-none p-0 flex text-surface-900 dark:text-surface-0 flex-col px-8">
-                            <li class="py-2">
-                                <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                                <span class="text-xl leading-normal">Responsive Layout</span>
-                            </li>
-                            <li class="py-2">
-                                <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                                <span class="text-xl leading-normal">Unlimited Push Messages</span>
-                            </li>
-                            <li class="py-2">
-                                <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                                <span class="text-xl leading-normal">50 Support Ticket</span>
-                            </li>
-                            <li class="py-2">
-                                <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                                <span class="text-xl leading-normal">Free Shipping</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
 
-                <div class="col-span-12 lg:col-span-4 p-0 md:p-4 mt-6 md:mt-0">
-                    <div class="p-4 flex flex-col border-surface-200 dark:border-surface-600 pricing-card cursor-pointer border-2 hover:border-primary duration-300 transition-all" style="border-radius: 10px">
-                        <div class="text-surface-900 dark:text-surface-0 text-center my-8 text-3xl">Startup</div>
-                        <img src="https://primefaces.org/cdn/templates/sakai/landing/startup.svg" class="w-10/12 mx-auto" alt="startup" />
-                        <div class="my-8 flex flex-col items-center gap-4">
-                            <div class="flex items-center">
-                                <span class="text-5xl font-bold mr-2 text-surface-900 dark:text-surface-0">$1</span>
-                                <span class="text-surface-600 dark:text-surface-200">per month</span>
-                            </div>
-                            <button pButton pRipple label="Get Started" class="p-button-rounded border-0 ml-4 font-light leading-tight bg-blue-500 text-white"></button>
-                        </div>
-                        <p-divider class="w-full bg-surface-200"></p-divider>
-                        <ul class="my-8 list-none p-0 flex text-surface-900 dark:text-surface-0 flex-col px-8">
-                            <li class="py-2">
-                                <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                                <span class="text-xl leading-normal">Responsive Layout</span>
-                            </li>
-                            <li class="py-2">
-                                <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                                <span class="text-xl leading-normal">Unlimited Push Messages</span>
-                            </li>
-                            <li class="py-2">
-                                <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                                <span class="text-xl leading-normal">50 Support Ticket</span>
-                            </li>
-                            <li class="py-2">
-                                <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                                <span class="text-xl leading-normal">Free Shipping</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                            <ul class="mt-6 space-y-2 text-sm">
+                                <li *ngFor="let b of p.bullets" class="flex gap-2">
+                                    <span aria-hidden="true">✔</span>
+                                    <span>{{ b }}</span>
+                                </li>
+                            </ul>
 
-                <div class="col-span-12 lg:col-span-4 p-0 md:p-4 mt-6 md:mt-0">
-                    <div class="p-4 flex flex-col border-surface-200 dark:border-surface-600 pricing-card cursor-pointer border-2 hover:border-primary duration-300 transition-all" style="border-radius: 10px">
-                        <div class="text-surface-900 dark:text-surface-0 text-center my-8 text-3xl">Enterprise</div>
-                        <img src="https://primefaces.org/cdn/templates/sakai/landing/enterprise.svg" class="w-10/12 mx-auto" alt="enterprise" />
-                        <div class="my-8 flex flex-col items-center gap-4">
-                            <div class="flex items-center">
-                                <span class="text-5xl font-bold mr-2 text-surface-900 dark:text-surface-0">$5</span>
-                                <span class="text-surface-600 dark:text-surface-200">per month</span>
+                            <div class="mt-8">
+                                <a class="btn-service w-full" href="#contact">Cotizar ahora</a>
                             </div>
-                            <button pButton pRipple label="Try Free" class="p-button-rounded border-0 ml-4 font-light leading-tight bg-blue-500 text-white"></button>
                         </div>
-                        <p-divider class="w-full bg-surface-200"></p-divider>
-                        <ul class="my-8 list-none p-0 flex text-surface-900 dark:text-surface-0 flex-col px-8">
-                            <li class="py-2">
-                                <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                                <span class="text-xl leading-normal">Responsive Layout</span>
-                            </li>
-                            <li class="py-2">
-                                <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                                <span class="text-xl leading-normal">Unlimited Push Messages</span>
-                            </li>
-                            <li class="py-2">
-                                <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                                <span class="text-xl leading-normal">50 Support Ticket</span>
-                            </li>
-                            <li class="py-2">
-                                <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                                <span class="text-xl leading-normal">Free Shipping</span>
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     `
 })
-export class PricingWidget {}
+export class PricingWidget {
+    plans: Plan[] = [
+        {
+            name: 'Express',
+            priceHint: 'Rápido',
+            tagline: 'Ideal si la prioridad es el tiempo.',
+            bullets: ['Procesamiento prioritario', 'Soporte directo', 'Rastreo'],
+            highlight: true
+        },
+        {
+            name: 'Estándar',
+            priceHint: 'Balance',
+            tagline: 'La opción más flexible para envíos regulares.',
+            bullets: ['Recepción + embalaje', 'Ruta estándar', 'Notificaciones']
+        },
+        {
+            name: 'Familiar',
+            priceHint: 'Ahorro',
+            tagline: 'Pensado para envíos de hogar con mejor costo.',
+            bullets: ['Optimización por volumen', 'Control de listado', 'Atención personalizada']
+        }
+    ];
+}

@@ -1,46 +1,113 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
     selector: 'highlights-widget',
+    standalone: true,
+    imports: [CommonModule, FormsModule, ButtonModule, InputTextModule],
     template: `
-        <div id="highlights" class="py-6 px-6 lg:px-20 mx-0 my-12 lg:mx-20">
-            <div class="text-center">
-                <div class="text-surface-900 dark:text-surface-0 font-normal mb-2 text-4xl">Powerful Everywhere</div>
-                <span class="text-muted-color text-2xl">Amet consectetur adipiscing elit...</span>
-            </div>
+        <section id="tracking" class="py-20 bg-white">
+            <div class="mx-auto max-w-7xl px-6">
+                <div class="grid grid-cols-12 gap-10 items-center">
+                    <div class="col-span-12 lg:col-span-6" data-reveal>
+                        <h2 class="section-title">Rastreo rápido</h2>
+                        <p class="section-subtitle !mx-0">
+                            Pon el número de guía y valida el estado. (Aquí dejamos el front listo; luego lo conectamos a tu API/Nest u Odoo.)
+                        </p>
 
-            <div class="grid grid-cols-12 gap-4 mt-20 pb-2 md:pb-20">
-                <div class="flex justify-center col-span-12 lg:col-span-6 bg-purple-100 p-0 order-1 lg:order-0" style="border-radius: 8px">
-                    <img src="https://primefaces.org/cdn/templates/sakai/landing/mockup.png" class="w-11/12" alt="mockup mobile" />
-                </div>
+                        <div class="mt-6 flex gap-3 flex-wrap">
+                            <input
+                                pInputText
+                                class="w-full md:w-[360px]"
+                                placeholder="Ej: DLA-000123"
+                                [(ngModel)]="trackingNumber"
+                                aria-label="Número de rastreo"
+                            />
+                            <button pButton type="button" label="Buscar" (click)="onTrack()"></button>
+                        </div>
 
-                <div class="col-span-12 lg:col-span-6 my-auto flex flex-col lg:items-end text-center lg:text-right gap-4">
-                    <div class="flex items-center justify-center bg-purple-200 self-center lg:self-end" style="width: 4.2rem; height: 4.2rem; border-radius: 10px">
-                        <i class="pi pi-fw pi-mobile text-4xl! text-purple-700"></i>
+                        <div *ngIf="status" class="mt-4 text-sm">
+                            <span class="font-semibold">Estado:</span> {{ status }}
+                        </div>
                     </div>
-                    <div class="leading-none text-surface-900 dark:text-surface-0 text-3xl font-normal">Congue Quisque Egestas</div>
-                    <span class="text-surface-700 dark:text-surface-100 text-2xl leading-normal ml-0 md:ml-2" style="max-width: 650px"
-                        >Lectus arcu bibendum at varius vel pharetra vel turpis nunc. Eget aliquet nibh praesent tristique magna sit amet purus gravida. Sit amet mattis vulputate enim nulla aliquet.</span
-                    >
-                </div>
-            </div>
 
-            <div class="grid grid-cols-12 gap-4 my-20 pt-2 md:pt-20">
-                <div class="col-span-12 lg:col-span-6 my-auto flex flex-col text-center lg:text-left lg:items-start gap-4">
-                    <div class="flex items-center justify-center bg-yellow-200 self-center lg:self-start" style="width: 4.2rem; height: 4.2rem; border-radius: 10px">
-                        <i class="pi pi-fw pi-desktop text-3xl! text-yellow-700"></i>
+                    <div class="col-span-12 lg:col-span-6" data-reveal>
+                        <div class="rounded-2xl border border-[rgba(0,0,0,0.08)] p-6 bg-surface-0">
+                            <div class="text-xl font-semibold">¿Cómo funciona?</div>
+                            <ol class="mt-4 space-y-3">
+                                <li class="flex gap-3">
+                                    <span class="inline-flex h-8 w-8 items-center justify-center rounded-xl" style="background: rgba(239,195,52,.15)">1</span>
+                                    <div>
+                                        <div class="font-semibold">Recepción</div>
+                                        <div class="text-sm text-surface-600">Recibimos tu paquete o coordinamos la entrega.</div>
+                                    </div>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="inline-flex h-8 w-8 items-center justify-center rounded-xl" style="background: rgba(239,195,52,.15)">2</span>
+                                    <div>
+                                        <div class="font-semibold">Embalaje y control</div>
+                                        <div class="text-sm text-surface-600">Se revisa, se protege y se documenta.</div>
+                                    </div>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="inline-flex h-8 w-8 items-center justify-center rounded-xl" style="background: rgba(239,195,52,.15)">3</span>
+                                    <div>
+                                        <div class="font-semibold">Despacho</div>
+                                        <div class="text-sm text-surface-600">Sale por la ruta correspondiente según el servicio.</div>
+                                    </div>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="inline-flex h-8 w-8 items-center justify-center rounded-xl" style="background: rgba(239,195,52,.15)">4</span>
+                                    <div>
+                                        <div class="font-semibold">Entrega y soporte</div>
+                                        <div class="text-sm text-surface-600">Atención si surge cualquier detalle.</div>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
                     </div>
-                    <div class="leading-none text-surface-900 dark:text-surface-0 text-3xl font-normal">Celerisque Eu Ultrices</div>
-                    <span class="text-surface-700 dark:text-surface-100 text-2xl leading-normal mr-0 md:mr-2" style="max-width: 650px"
-                        >Adipiscing commodo elit at imperdiet dui. Viverra nibh cras pulvinar mattis nunc sed blandit libero. Suspendisse in est ante in. Mauris pharetra et ultrices neque ornare aenean euismod elementum nisi.</span
-                    >
-                </div>
-
-                <div class="flex justify-end order-1 sm:order-2 col-span-12 lg:col-span-6 bg-yellow-100 p-0" style="border-radius: 8px">
-                    <img src="https://primefaces.org/cdn/templates/sakai/landing/mockup-desktop.png" class="w-11/12" alt="mockup" />
                 </div>
             </div>
-        </div>
+        </section>
+
+        <section id="how" class="dla-cta-section">
+            <div class="mx-auto max-w-7xl px-6">
+                <div class="dla-cta-card" data-reveal>
+                    <div class="cta-content">
+                        <h2 class="text-white">¿Listo para enviar?</h2>
+                        <p class="text-white/80 mt-2">
+                            Si quieres velocidad, orden y comunicación, este es el carril correcto.
+                        </p>
+                    </div>
+                    <div class="flex gap-3 flex-wrap">
+                        <a class="btn-dla-primary" href="#contact">
+                            <span>Hablar por WhatsApp</span>
+                            <span aria-hidden="true">→</span>
+                        </a>
+                        <a class="btn-dla-secondary" href="#services">
+                            <span>Ver servicios</span>
+                            <span aria-hidden="true">↘</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
     `
 })
-export class HighlightsWidget {}
+export class HighlightsWidget {
+    trackingNumber = '';
+    status = '';
+
+    onTrack() {
+        const n = (this.trackingNumber || '').trim();
+        if (!n) {
+            this.status = 'Introduce un número válido.';
+            return;
+        }
+        // Placeholder: aquí luego conectamos con tu API (NestJS) o el endpoint de Odoo.
+        this.status = `Recibido: ${n} (demo)`;
+    }
+}
