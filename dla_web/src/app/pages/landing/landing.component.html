@@ -1,0 +1,187 @@
+
+<div class="dla-landing">
+  <header class="dla-topbar">
+    <p-menubar [model]="menu" styleClass="dla-menubar">
+      <ng-template pTemplate="start">
+        <div class="dla-brand" (click)="scrollTo('top')" role="button" tabindex="0">
+          <img ngSrc="assets/dla/logo.svg" width="44" height="44" alt="DLA" class="dla-logo" />
+          <div class="dla-brand-text">
+            <div class="dla-brand-name">DLA</div>
+            <div class="dla-brand-sub">Viajes y Envíos</div>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="end">
+        <button pButton pRipple class="dla-btn-primary" icon="pi pi-phone" label="Contactar" (click)="scrollTo('contact')"></button>
+      </ng-template>
+    </p-menubar>
+  </header>
+
+  <main class="dla-main" id="top">
+    <section class="dla-hero">
+      <p-carousel
+        [value]="slides"
+        [numVisible]="1"
+        [numScroll]="1"
+        [circular]="true"
+        [autoplayInterval]="6500"
+        [responsiveOptions]="carouselResponsive"
+        styleClass="dla-hero-carousel"
+      >
+        <ng-template pTemplate="item" let-slide let-i="index">
+          <article class="dla-slide">
+            <img [ngSrc]="slide.image" width="1600" height="700" [priority]="i === 0" alt="DLA" class="dla-slide-img" />
+            <div class="dla-slide-overlay">
+              <div class="dla-slide-content">
+                <p-tag value="DLA" severity="warn" styleClass="dla-tag"></p-tag>
+                <h1 class="dla-h1">{{ slide.title }}</h1>
+                <p class="dla-lead">{{ slide.subtitle }}</p>
+
+                <div class="dla-cta">
+                  <button pButton pRipple class="dla-btn-primary" icon="pi pi-bolt" [label]="slide.primaryLabel" [routerLink]="slide.primaryLink"></button>
+                  <button *ngIf="slide.secondaryLabel" pButton pRipple class="dla-btn-ghost" icon="pi pi-arrow-right" [label]="slide.secondaryLabel" (click)="onSlideSecondary(slide)"></button>
+                </div>
+              </div>
+            </div>
+          </article>
+        </ng-template>
+      </p-carousel>
+    </section>
+
+    <section class="dla-section" id="services">
+      <div class="dla-section-header">
+        <h2 class="dla-h2">Servicios y ventajas</h2>
+        <p class="dla-muted">Operación seria: método, comunicación y resultados.</p>
+      </div>
+
+      <div class="dla-cards-grid">
+        <p-card *ngFor="let c of highlights; let i = index" styleClass="dla-card">
+          <ng-template pTemplate="header">
+            <div class="dla-card-head">
+              <i class="pi" [ngClass]="c.icon"></i>
+              <div class="dla-card-title">
+                <span>{{ c.title }}</span>
+                <p-tag *ngIf="c.badge" [value]="c.badge" severity="warn"></p-tag>
+              </div>
+            </div>
+          </ng-template>
+          <p class="dla-card-text">{{ c.text }}</p>
+        </p-card>
+      </div>
+
+      <p-divider></p-divider>
+
+      <div class="dla-cards-grid">
+        <p-card *ngFor="let s of services; let i = index" styleClass="dla-card">
+          <ng-template pTemplate="header">
+            <div class="dla-card-head">
+              <i class="pi" [ngClass]="s.icon"></i>
+              <div class="dla-card-title"><span>{{ s.title }}</span></div>
+            </div>
+          </ng-template>
+          <p class="dla-card-text">{{ s.text }}</p>
+        </p-card>
+      </div>
+    </section>
+
+    <section class="dla-section" id="how">
+      <div class="dla-section-header">
+        <h2 class="dla-h2">Cómo funciona</h2>
+        <p class="dla-muted">Simple, clásico y efectivo. Como debe ser.</p>
+      </div>
+
+      <div class="dla-steps-grid">
+        <p-card *ngFor="let st of steps" styleClass="dla-step-card">
+          <div class="dla-step">
+            <i class="pi" [ngClass]="st.icon"></i>
+            <div>
+              <div class="dla-step-title">{{ st.title }}</div>
+              <div class="dla-step-text">{{ st.text }}</div>
+            </div>
+          </div>
+        </p-card>
+      </div>
+
+      <div class="dla-cta-wide">
+        <div>
+          <div class="dla-cta-wide-title">¿Listo para mover eso?</div>
+          <div class="dla-cta-wide-text">Cotiza y te decimos el camino más práctico.</div>
+        </div>
+        <button pButton pRipple class="dla-btn-primary" icon="pi pi-calculator" label="Cotizar" [routerLink]="['/landing']"></button>
+      </div>
+    </section>
+
+    <section class="dla-section" id="faq">
+      <div class="dla-section-header">
+        <h2 class="dla-h2">Preguntas frecuentes</h2>
+        <p class="dla-muted">Las dudas normales. Las respuestas claras.</p>
+      </div>
+
+      <p-accordion [multiple]="true" styleClass="dla-accordion">
+        <p-accordion-tab *ngFor="let f of faqs">
+          <ng-template pTemplate="header">{{ f.q }}</ng-template>
+          <p class="dla-faq">{{ f.a }}</p>
+        </p-accordion-tab>
+      </p-accordion>
+    </section>
+
+    <section class="dla-section" id="contact">
+      <div class="dla-section-header">
+        <h2 class="dla-h2">Contacto</h2>
+        <p class="dla-muted">Déjanos tu número y te llamamos (rápido y al grano).</p>
+      </div>
+
+      <div class="dla-contact">
+        <div class="dla-contact-card">
+          <label class="dla-label"><i class="pi pi-user" style="margin-right: 8px;"></i>Nombre</label>
+          <input pInputText class="dla-input" placeholder="Tu nombre completo" />
+
+          <label class="dla-label"><i class="pi pi-phone" style="margin-right: 8px;"></i>Teléfono</label>
+          <input pInputText class="dla-input" placeholder="+1 (___) ___-____" />
+
+          <label class="dla-label"><i class="pi pi-envelope" style="margin-right: 8px;"></i>Email</label>
+          <input pInputText class="dla-input" placeholder="tu@email.com" />
+
+          <button pButton pRipple class="dla-btn-primary dla-contact-btn" icon="pi pi-send" label="Enviar mensaje"></button>
+          <small class="dla-muted" style="display: block; margin-top: 12px;">*Luego conectas esto a tu backend (NestJS) con una API de contacto.</small>
+        </div>
+
+        <div class="dla-contact-side">
+          <p-card styleClass="dla-card">
+            <ng-template pTemplate="header">
+              <div class="dla-card-head">
+                <i class="pi pi-building"></i>
+                <div class="dla-card-title"><span>DLA Viajes y Envíos</span></div>
+              </div>
+            </ng-template>
+
+            <p class="dla-card-text">
+              Operación orientada a disciplina y servicio. Orden, respeto y constancia.
+            </p>
+
+            <div class="dla-mini"><i class="pi pi-map-marker"></i><span>Orlando, FL</span></div>
+            <div class="dla-mini"><i class="pi pi-clock"></i><span>Horario: Lun–Vie 08:00 – 17:00</span></div>
+            <div class="dla-mini"><i class="pi pi-phone"></i><span>+1 (407) 123-4567</span></div>
+          </p-card>
+        </div>
+      </div>
+    </section>
+
+    <footer class="dla-footer">
+      <div class="dla-footer-inner">
+        <div>
+          <div class="dla-footer-title">DLA Viajes y Envíos</div>
+          <div class="dla-footer-sub">© {{ year }} · Todos los derechos reservados.</div>
+        </div>
+        <div class="dla-footer-right">
+          <a class="dla-footer-link" (click)="scrollTo('services')">Servicios</a>
+          <a class="dla-footer-link" (click)="scrollTo('how')">Cómo funciona</a>
+          <a class="dla-footer-link" (click)="scrollTo('contact')">Contacto</a>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <p-scrollTop></p-scrollTop>
+</div>
